@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+Key:	      Description:
+primary	    Primary brand color for links, buttons, etc.
+secondary	  A secondary brand color for alternative styling
+body	      Body foreground color
+background	Body background color
+highlight	  A background color for highlighting text
+muted	      A faint color for borders, backgrounds, and accents that do not require high contrast with the background color
+accent	    A contrast color for emphasizing UI
+danger      A color for displaying error messages
+*/
+@layer base {
+  :root {
+    --color-primary: 163 230 53; /* lime-400 */
+    --color-primary-100: 190 242 100; /* lime-300 */
+    --color-secondary: 243 244 246; /* gray-100 */
+    --color-secondary-100: 229 231 235; /* gray-200 */
+    --color-body: 17 24 39; /* gray-900 */
+    --color-background: 255 255 255; /* white */
+    --color-highlight: 255 255 255; /* white */
+    --color-muted: 229 231 235; /* gray-200 */
+    --color-accent: 107 114 128; /* gray-500 */
+    --color-danger: 252 165 165; /* red-300 */
+    --color-danger-100: 254 205 211; /* red-200 */
+  }
+  :root.dark {
+    --color-primary: 163 230 53; /* lime-400 */
+    --color-primary-100: 190 242 100; /* lime-300 */
+    --color-secondary: 75 85 99; /* gray-600 */
+    --color-secondary-100: 107 114 128; /* gray-500 */
+    --color-body: 255 255 255; /* white */
+    --color-background: 0 0 0; /* black */
+    --color-highlight: 55 65 81; /* gray-700 */
+    --color-muted: 75 85 99; /* gray-600 */
+    --color-accent: 156 163 175; /* gray-400 */
+    --color-danger: 239 68 68; /* red-500 */
+    --color-danger-100: 251 113 133; /* red-400 */
+  }
+}
+
+:root {
+  @apply font-mono text-lg font-normal leading-6 text-body;
+
+  color-scheme: light dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  @apply bg-background text-body;
+}
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Fonts */
+h3 {
+  @apply lg:text-xl text-body font-semibold;
+}
+
+/* Input */
+input {
+  @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
+}
+input:disabled {
+  @apply cursor-not-allowed;
+}
+
+/* Dialog */
+dialog {
+  @apply p-0 bg-highlight rounded-lg backdrop:bg-transparent/70;
+}
