@@ -1,4 +1,19 @@
 import hre from "hardhat";
+const {
+  ethers: {
+    BigNumber: { from: bn },
+  },
+  network: {
+    config: {
+      vthoAddr,
+      // renTokenAddr,
+      // darknodeRegistryAddr,
+      // darknodePaymentAddr,
+      // claimRewardsAddr,
+      // gatewayAddr,
+    },
+  },
+} = require("hardhat");
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => {
@@ -16,9 +31,8 @@ async function main() {
   const admin = signers[0];
   console.log({ signers });
 
-  const greeting = "Hello, world!";
   const Greeter = await hre.thor.getContractFactory("Greeter");
-  const greeter = await Greeter.connect(admin).deploy(greeting);
+  const greeter = await Greeter.connect(admin).deploy(vthoAddr);
   await greeter.deployed();
 
   console.log(`Greeter contract deployed to ${greeter.address}`);

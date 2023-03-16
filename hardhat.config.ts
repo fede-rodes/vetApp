@@ -19,6 +19,8 @@ const config: HardhatUserConfig = {
       privateKey: process.env.WALLET_PRIVATE_KEY,
       // delegateUrl: "https://sponsor-testnet.vechain.energy/by/#",
       blockGasLimit: 10000000,
+      vthoAddr: "0x0000000000000000000000000000456E65726779",
+      vthoFaucetAddr: "0x4f6FC409e152D33843Cf4982d414C1Dd0879277e",
     },
   },
   // etherscan: {

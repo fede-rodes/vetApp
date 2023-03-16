@@ -4,12 +4,14 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 import "../interfaces/IERC20.sol";
 
+// TODO: change name to Aggregator
 contract Greeter {
-  address payable public owner;
   IERC20 public vtho;
+  address payable public owner;
   mapping(address => uint256) public balances;
 
-  constructor() {
+  constructor(address _vthoAddr) {
+    vtho = IERC20(_vthoAddr);
     owner = payable(msg.sender);
   }
 
