@@ -2,21 +2,28 @@
 pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
+import "../interfaces/IERC20.sol";
 
 contract Greeter {
-  string private greeting;
+  address payable public owner;
+  IERC20 public vtho;
+  mapping(address => uint256) public balances;
 
-  constructor(string memory _greeting) {
-    console.log("Deploying a Greeter with greeting:", _greeting);
-    greeting = _greeting;
+  constructor() {
+    owner = payable(msg.sender);
   }
 
-  function greet() public view returns (string memory) {
-    return greeting;
-  }
+	/// @notice Pull VTHO from user's wallet. Before pulling though,
+	/// the user has to give allowance on the VTHO contract.
+  /// @param _amount The amount of VTHO pulled from the user's address.
+	function pull(address payable _sender, uint256 _amount) external {
+		require(_amount > 0, "Greeter: Invalid amount");
+		require(vtho.balanceOf(_sender) > _amount, "Greeter: Insufficient amount");
 
-  function setGreeting(string memory _greeting) public {
-    console.log("Changing greeting from '%s' to '%s'", greeting, _greeting);
-    greeting = _greeting;
-  }
+		balances[_sender] += _amount;
+
+		// emit RenDeposited(sender, _amount);
+
+		require(vtho.transferFrom(_sender, address(this), _amount), "Greeter: Pull failed");
+	}
 }

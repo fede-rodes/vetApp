@@ -3,7 +3,7 @@ const ethers = require("@vechain/ethers");
 try {
   if (process.env.WALLET_MNEMONIC == null) {
     throw new Error(
-      'Call with WORDS="<mnemonic words>" node mnemonic-to-pk.js'
+      'Call with WALLET_MNEMONIC="<mnemonic words>" node mnemonic-to-pk.js'
     );
   }
 
