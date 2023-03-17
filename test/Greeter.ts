@@ -16,50 +16,55 @@ const {
 const { expect } = require("chai");
 const vthoAbi = require("../abis/ERC20.json");
 
-const vthoAddr = "0x0000000000000000000000000000456E65726779";
-const vthoFaucetAddr = "0x4f6FC409e152D33843Cf4982d414C1Dd0879277e";
+// const vthoAddr = "0x0000000000000000000000000000456E65726779";
+// const vthoFaucetAddr = "0x4f6FC409e1e2D33843Cf4982d414C1Dd0879277e";
 
 describe("Greeter contract", function () {
   const VTHO_DECIMALS = 18;
 
-  let owner, keeper, alice, bob;
+  let faucet, deployer, keeper, alice, bob;
   let vtho;
   let greeter;
   let snapshotId;
 
-  console.log({ vthoAddr, vthoFaucetAddr });
+  // console.log({ vthoAddr, vthoFaucetAddr });
 
   before(async () => {
-    [owner, keeper, alice, bob] = await getSigners();
-    console.log({ owner, keeper });
+    [faucet, deployer, keeper, alice, bob] = await getSigners();
 
-    vtho = new Contract(vthoAddr, vthoAbi, owner);
+    // vtho = new Contract(vthoAddr, vthoAbi, owner);
+    // make sure to replace the "GoofyGoober" reference with your own ERC-20 name!
+    const VTHO = await getContractFactory("VTHO");
+    vtho = await VTHO.connect(faucet).deploy();
+
+    console.log("Token address:", vtho.address);
     // darknodeRegistry = new Contract(darknodeRegistryAddr, DarknodeRegistryLogicV1.abi, owner);
     // darknodePayment = new Contract(darknodePaymentAddr, DarknodePayment.abi, owner);
 
-    console.log({ vtho });
-    expect(await vtho.balanceOf(vthoFaucetAddr)).to.be.above(0);
-    await provider.request({
-      method: "hardhat_impersonateAccount",
-      params: [vthoFaucetAddr],
-    });
+    // console.log({ vtho });
+    // expect(await vtho.balanceOf(vthoFaucetAddr)).to.be.above(0);
+    // await provider.request({
+    //   method: "hardhat_impersonateAccount",
+    //   params: [vthoFaucetAddr],
+    // });
 
-    const faucet = await getSigner(vthoFaucetAddr);
-    for (const user of [owner, keeper, alice, bob]) {
+    // const faucet = await getSigner(vthoFaucetAddr);
+    for (const user of [deployer, keeper, alice, bob]) {
       expect(await vtho.balanceOf(user.address)).to.equal(0);
 
       const amount = parseUnits("500.0", VTHO_DECIMALS);
       await vtho.connect(faucet).transfer(user.address, amount);
       expect(await vtho.balanceOf(user.address)).to.equal(amount);
+      console.log({ balanceOf: await vtho.balanceOf(user.address) });
     }
 
-    await provider.request({
-      method: "hardhat_stopImpersonatingAccount",
-      params: [vthoFaucetAddr],
-    });
+    // await provider.request({
+    //   method: "hardhat_stopImpersonatingAccount",
+    //   params: [vthoFaucetAddr],
+    // });
 
     const Greeter = await getContractFactory("Greeter");
-    greeter = await Greeter.connect(owner).deploy(vtho.address);
+    greeter = await Greeter.connect(deployer).deploy(vtho.address);
     await greeter.deployed();
     expect(await vtho.balanceOf(greeter.address)).to.equal(0);
 
@@ -72,18 +77,21 @@ describe("Greeter contract", function () {
   });
 
   it("should set the constructor args to the supplied values", async function () {
-    expect(await greeter.owner()).to.equal(owner.address);
+    expect(await greeter.owner()).to.equal(deployer.address);
   });
 
   describe("pull method", function () {
     // [bn(1), POOL_BOND].forEach(amount => {
     // it(`should deposit ${amount.toString()} REN into greeter`, async function () {
     it("should pull VTHO from the user's wallet if allowance is given", async function () {
-      const amount = parseUnits("50.0", VTHO_DECIMALS);
+      const amount = parseUnits("50.0", await vtho.decimals());
+      console.log({ amount });
       const aliceBalance = await vtho.balanceOf(alice.address);
+      const greeterBalance = await vtho.balanceOf(greeter.address);
+      console.log({ aliceBalance, greeterBalance });
 
       await vtho.connect(alice).approve(greeter.address, amount);
-      await greeter.connect(keeper).pull(amount);
+      await greeter.connect(keeper).pull(alice.address, amount);
 
       // Veify correct balances
       expect(await vtho.balanceOf(greeter.address)).to.equal(amount);
@@ -91,8 +99,10 @@ describe("Greeter contract", function () {
         aliceBalance.sub(amount)
       );
       // expect(await greeter.balanceOf(alice.address)).to.equal(amount);
-      // expect(await greeter.totalPooled()).to.equal(amount);
+      expect(await vtho.balanceOf(greeter.address)).to.equal(
+        greeterBalance.add(amount)
+      );
     });
-    // });
   });
+  // });
 });
