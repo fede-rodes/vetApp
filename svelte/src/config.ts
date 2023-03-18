@@ -1,6 +1,8 @@
 const CHAIN_ID = import.meta.env.VITE_CHAIN_ID;
 // const INFURA_API_KEY = import.meta.env.VITE_INFURA_API_KEY;
 
+if (CHAIN_ID == null) throw new Error("Missing env var VITE_CHAIN_ID");
+
 /**
  * JavaScript CAIP-2 representation object.
  * @see https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-2.md
@@ -8,7 +10,7 @@ const CHAIN_ID = import.meta.env.VITE_CHAIN_ID;
 export type ChainData = {
   name: string;
   chain: string;
-  // network: string;
+  network: string;
   rpc: string[];
   faucets: string[];
   nativeCurrency: {
@@ -36,7 +38,8 @@ export const CHAINS: Record<100009 | 100010, ChainData> = {
   100009: {
     name: "VeChain",
     chain: "VeChain",
-    rpc: [],
+    network: "main",
+    rpc: ["https://mainnet.veblocks.net/"],
     faucets: [],
     nativeCurrency: {
       name: "VeChain",
@@ -63,7 +66,8 @@ export const CHAINS: Record<100009 | 100010, ChainData> = {
   100010: {
     name: "VeChain Testnet",
     chain: "VeChain",
-    rpc: [],
+    network: "test",
+    rpc: ["https://testnet.veblocks.net/"],
     faucets: ["https://faucet.vecha.in"],
     nativeCurrency: {
       name: "VeChain",
