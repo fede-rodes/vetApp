@@ -30,34 +30,34 @@ function createStore() {
   let connectedWalletId: WalletId | undefined;
 
   // Update wallet store based on MetaMask store changes.
-  metamask.subscribe(async (data) => {
-    // No data present means MetaMask got disconnected.
-    if (ethers == null || data == null) {
-      set({ ...initialState });
-      connectedWalletId = undefined;
-      return;
-    }
+  // metamask.subscribe(async (data) => {
+  //   // No data present means MetaMask got disconnected.
+  //   if (ethers == null || data == null) {
+  //     set({ ...initialState });
+  //     connectedWalletId = undefined;
+  //     return;
+  //   }
 
-    // MetaMask is connected.
-    try {
-      const provider = new ethers.providers.Web3Provider(data.injected);
-      const network = await provider.getNetwork();
+  //   // MetaMask is connected.
+  //   try {
+  //     const provider = new ethers.providers.Web3Provider(data.injected);
+  //     const network = await provider.getNetwork();
 
-      set({
-        provider,
-        loading: false,
-        error: undefined,
-        isConnected: true,
-        account: data.account,
-        chainId: network.chainId,
-      });
-    } catch (error) {
-      update((s) => ({
-        ...s,
-        error: error?.message || "Unknown error occurred.",
-      }));
-    }
-  });
+  //     set({
+  //       provider,
+  //       loading: false,
+  //       error: undefined,
+  //       isConnected: true,
+  //       account: data.account,
+  //       chainId: network.chainId,
+  //     });
+  //   } catch (error) {
+  //     update((s) => ({
+  //       ...s,
+  //       error: error?.message || "Unknown error occurred.",
+  //     }));
+  //   }
+  // });
 
   return {
     subscribe,
@@ -66,9 +66,9 @@ function createStore() {
 
       try {
         // Lazy load ethers
-        if (ethers == null) {
-          ethers = (await import("ethers")).ethers;
-        }
+        // if (ethers == null) {
+        //   ethers = (await import("ethers")).ethers;
+        // }
 
         if (walletId != "metamask") {
           update((s) => ({
@@ -97,22 +97,22 @@ function createStore() {
         metamask.disconnect();
       }
     },
-    switchChain: async function (chainId: number): Promise<void> {
-      update((s) => ({ ...s, loading: true, error: undefined }));
+    // switchChain: async function (chainId: number): Promise<void> {
+    //   update((s) => ({ ...s, loading: true, error: undefined }));
 
-      try {
-        if (connectedWalletId === "metamask") {
-          await metamask.switchChain(chainId);
-        }
-      } catch (error) {
-        update((s) => ({
-          ...s,
-          error: error?.message || "Unknown error occurred.",
-        }));
-      } finally {
-        update((s) => ({ ...s, loading: false }));
-      }
-    },
+    //   try {
+    //     if (connectedWalletId === "metamask") {
+    //       await metamask.switchChain(chainId);
+    //     }
+    //   } catch (error) {
+    //     update((s) => ({
+    //       ...s,
+    //       error: error?.message || "Unknown error occurred.",
+    //     }));
+    //   } finally {
+    //     update((s) => ({ ...s, loading: false }));
+    //   }
+    // },
   };
 }
 
