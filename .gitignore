@@ -7,11 +7,11 @@ typechain-types
 
 # Hardhat files
 cache
-!svelte/
-svelte/*
-!svelte/src/
-svelte/src/*
-!svelte/src/*/
+# !svelte/
+# svelte/*
+# !svelte/src/
+# svelte/src/*
+# !svelte/src/*/
 svelte/src/artifacts/*
 !svelte/src/artifacts/contracts
 svelte/src/artifacts/contracts/*
