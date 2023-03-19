@@ -1,27 +1,27 @@
 import { writable } from "svelte/store";
-import type { Web3Provider } from "@ethersproject/providers";
+// import type { Web3Provider } from "@ethersproject/providers";
 import type { WalletId } from "@/typings/types";
 import { metamask } from "@/stores/metamask";
 
 type State = {
-  provider: Web3Provider | undefined;
+  // provider: Web3Provider | undefined;
   loading: boolean;
   error: string | undefined;
   isConnected: boolean;
   account: Address | undefined;
-  chainId: number | undefined;
+  // chainId: number | undefined;
 };
 
 // TODO
-let ethers: any;
+// let ethers: any;
 
 const initialState: State = {
-  provider: undefined,
+  // provider: undefined,
   loading: false,
   error: undefined,
   isConnected: false,
   account: undefined,
-  chainId: undefined,
+  // chainId: undefined,
 };
 
 function createStore() {
@@ -30,34 +30,37 @@ function createStore() {
   let connectedWalletId: WalletId | undefined;
 
   // Update wallet store based on MetaMask store changes.
-  // metamask.subscribe(async (data) => {
-  //   // No data present means MetaMask got disconnected.
-  //   if (ethers == null || data == null) {
-  //     set({ ...initialState });
-  //     connectedWalletId = undefined;
-  //     return;
-  //   }
+  metamask.subscribe(async (data) => {
+    // No data present means MetaMask got disconnected.
+    if (
+      // ethers == null ||
+      data == null
+    ) {
+      set({ ...initialState });
+      connectedWalletId = undefined;
+      return;
+    }
 
-  //   // MetaMask is connected.
-  //   try {
-  //     const provider = new ethers.providers.Web3Provider(data.injected);
-  //     const network = await provider.getNetwork();
+    // MetaMask is connected.
+    try {
+      // const provider = new ethers.providers.Web3Provider(data.injected);
+      // const network = await provider.getNetwork();
 
-  //     set({
-  //       provider,
-  //       loading: false,
-  //       error: undefined,
-  //       isConnected: true,
-  //       account: data.account,
-  //       chainId: network.chainId,
-  //     });
-  //   } catch (error) {
-  //     update((s) => ({
-  //       ...s,
-  //       error: error?.message || "Unknown error occurred.",
-  //     }));
-  //   }
-  // });
+      set({
+        // provider,
+        loading: false,
+        error: undefined,
+        isConnected: true,
+        account: data.account,
+        // chainId: network.chainId,
+      });
+    } catch (error) {
+      update((s) => ({
+        ...s,
+        error: error?.message || "Unknown error occurred.",
+      }));
+    }
+  });
 
   return {
     subscribe,

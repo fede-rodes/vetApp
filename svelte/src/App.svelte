@@ -85,17 +85,20 @@
       disabled={!$wallet.isConnected || $wallet.chainId != chain.chainId}
     /> -->
 
-    {#if $wallet.isConnected && $wallet.chainId !== chain.chainId}
-      <!-- <Button intent="danger" on:click={handleSwitch}>Wrong network</Button> -->
-    {:else if $wallet.isConnected}
-      <Button type="submit" intent="primary" {disabled}>Update greeting</Button>
-    {:else}
-      <ConnectWalletButton intent="primary" />
-    {/if}
+  <!-- {#if $wallet.isConnected && $wallet.chainId !== chain.chainId} -->
+  <!-- <Button intent="danger" on:click={handleSwitch}>Wrong network</Button> -->
+  <!-- {:else if $wallet.isConnected} -->
+  {#if $wallet.isConnected}
+    <Button type="submit" intent="primary" {disabled}
+      >Allow Expo to spend your VTHO</Button
+    >
+  {:else}
+    <ConnectWalletButton intent="primary" />
+  {/if}
 
-    {#if error != null && error.length > 0}
-      <p class="text-danger">{error}</p>
-    {/if}
+  {#if error != null && error.length > 0}
+    <p class="text-danger">{error}</p>
+  {/if}
   <!-- </form> -->
 
   <p class="text-center">Chain: {chain.name}</p>

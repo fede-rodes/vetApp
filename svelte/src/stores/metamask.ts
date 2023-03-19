@@ -10,7 +10,7 @@ function createStore() {
   const { subscribe, set } = writable<
     | {
         connex: Connex;
-        // account: Address
+        account: Address;
       }
     | undefined
   >();
@@ -66,7 +66,7 @@ function createStore() {
 
       set({
         connex,
-        // account: accounts[0],
+        account: certResponse.annex.signer as Address,
       });
     },
     disconnect: function () {
