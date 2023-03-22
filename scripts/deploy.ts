@@ -15,6 +15,8 @@ const {
   },
 } = require("hardhat");
 
+const VTHO_CONTRACT_ADDRESS = process.env.VTHO_CONTRACT_ADDRESS;
+
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
@@ -32,7 +34,7 @@ async function main() {
   console.log({ signers });
 
   const Greeter = await hre.thor.getContractFactory("Greeter");
-  const greeter = await Greeter.connect(admin).deploy(vthoAddr);
+  const greeter = await Greeter.connect(admin).deploy(VTHO_CONTRACT_ADDRESS);
   await greeter.deployed();
 
   console.log(`Greeter contract deployed to ${greeter.address}`);

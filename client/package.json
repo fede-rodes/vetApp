@@ -15,6 +15,7 @@
     "build-storybook": "storybook build"
   },
   "devDependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@storybook/addon-essentials": "^7.0.0-beta.30",
     "@storybook/addon-interactions": "^7.0.0-beta.30",
     "@storybook/addon-links": "^7.0.0-beta.30",
@@ -24,6 +25,7 @@
     "@storybook/testing-library": "^0.0.13",
     "@sveltejs/vite-plugin-svelte": "^2.0.0",
     "@tsconfig/svelte": "^3.0.0",
+    "@types/big.js": "^6.1.6",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",
     "postcss-load-config": "^4.0.1",
@@ -39,6 +41,8 @@
   },
   "dependencies": {
     "@vechain/connex": "^2.0.14",
+    "big.js": "^6.2.1",
+    "buffer": "^6.0.3",
     "class-variance-authority": "^0.4.0",
     "ethers": "^5.7.2",
     "thor-devkit": "^2.0.7"

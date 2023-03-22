@@ -15,6 +15,7 @@ const config: HardhatUserConfig = {
     },
     vechain: {
       url: "https://testnet.veblocks.net",
+      chainId: 100010,
       // @ts-ignore
       privateKey: process.env.WALLET_PRIVATE_KEY,
       // delegateUrl: "https://sponsor-testnet.vechain.energy/by/#",
