@@ -21,7 +21,8 @@
   $: {
     if (dialog != null) {
       if (isOpen) {
-        dialog.showModal();
+        // dialog.showModal();
+        dialog.show();
       } else {
         dialog.close();
       }

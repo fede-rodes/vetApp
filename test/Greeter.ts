@@ -18,6 +18,7 @@ const vthoAbi = require("../abis/ERC20.json");
 
 // const vthoAddr = "0x0000000000000000000000000000456E65726779";
 // const vthoFaucetAddr = "0x4f6FC409e1e2D33843Cf4982d414C1Dd0879277e";
+const uniAddr = process.env.VEXCHANGE_UNI_ROUTER_ADDRESS; // This will work with a fork of testnet
 
 describe("Greeter contract", function () {
   const VTHO_DECIMALS = 18;
@@ -64,7 +65,7 @@ describe("Greeter contract", function () {
     // });
 
     const Greeter = await getContractFactory("Greeter");
-    greeter = await Greeter.connect(deployer).deploy(vtho.address);
+    greeter = await Greeter.connect(deployer).deploy(vtho.address, uniAddr);
     await greeter.deployed();
     expect(await vtho.balanceOf(greeter.address)).to.equal(0);
 
@@ -88,13 +89,14 @@ describe("Greeter contract", function () {
       console.log({ amount });
       const aliceBalance = await vtho.balanceOf(alice.address);
       const greeterBalance = await vtho.balanceOf(greeter.address);
+      expect(greeterBalance).to.equal(0);
       console.log({ aliceBalance, greeterBalance });
 
       await vtho.connect(alice).approve(greeter.address, amount);
-      await greeter.connect(keeper).pull(alice.address, amount);
+      await greeter.connect(keeper).pull(alice.address, amount, 20);
 
       // Veify correct balances
-      expect(await vtho.balanceOf(greeter.address)).to.equal(amount);
+      // expect(await vtho.balanceOf(greeter.address)).to.equal(amount);
       expect(await vtho.balanceOf(alice.address)).to.equal(
         aliceBalance.sub(amount)
       );

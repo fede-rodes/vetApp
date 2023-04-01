@@ -2,30 +2,57 @@
 pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
-import "../interfaces/IERC20.sol";
+import { IERC20 } from "../interfaces/IERC20.sol";
+import { IUniswapV2Router02 } from "../interfaces/IUniswapV2Router02.sol";
 
 // TODO: change name to Aggregator
 contract Greeter {
-  IERC20 public vtho;
+  IERC20 public VTHO;
+  IUniswapV2Router02 public UniswapV2Router02;
   address payable public owner;
-  mapping(address => uint256) public balances;
+  // address public exchangeRouter;
+  // mapping(address => uint256) public balances;
 
-  constructor(address _vthoAddr) {
-    vtho = IERC20(_vthoAddr);
+  event Deposit(address from, uint256 amount);
+  event Withdraw(address to, uint256 amount);
+
+  constructor(address vthoAddr, address router) {
+    VTHO = IERC20(vthoAddr);
+    UniswapV2Router02 = IUniswapV2Router02(router);
     owner = payable(msg.sender);
   }
 
 	/// @notice Pull VTHO from user's wallet. Before pulling though,
 	/// the user has to give allowance on the VTHO contract.
-  /// @param _amount The amount of VTHO pulled from the user's address.
-	function pull(address payable _sender, uint256 _amount) external {
-		require(_amount > 0, "Greeter: Invalid amount");
-		require(vtho.balanceOf(_sender) > _amount, "Greeter: Insufficient amount");
+  /// @param amountIn The amount of VTHO pulled from the user's address.
+	function pull(address payable sender, uint256 amountIn, uint256 minRate) external {
+		require(amountIn > 0, "Greeter: Invalid amount");
+		require(VTHO.balanceOf(sender) > amountIn, "Greeter: Insufficient amount");
+    // require(exchangeRouter != address(0), "exchangeRouter needs to be set");
+		// balances[sender] += amountIn;
 
-		balances[_sender] += _amount;
+    // TODO: substract FEE and transaction cost
 
-		// emit RenDeposited(sender, _amount);
+		require(VTHO.transferFrom(sender, address(this), amountIn), "Greeter: Pull failed");
+		emit Deposit(sender, amountIn);
 
-		require(vtho.transferFrom(_sender, address(this), _amount), "Greeter: Pull failed");
+    uint256 amountOutMin = amountIn / minRate;
+
+    require(
+        VTHO.approve(address(UniswapV2Router02), amountIn),
+        "Greeter: approve failed."
+    );
+
+    // amountOutMin must be retrieved from an oracle of some kind
+    address[] memory path = new address[](2);
+    path[0] = address(VTHO);
+    path[1] = UniswapV2Router02.WETH(); // Throws
+    UniswapV2Router02.swapExactTokensForETH(
+      amountIn,
+      amountOutMin,
+      path,
+      sender,
+      block.timestamp
+    );
 	}
 }

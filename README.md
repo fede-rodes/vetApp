@@ -69,3 +69,29 @@ cd into `hardhat` folder and run `npm init vite` selecting the `svelte` option.
 [https://github.com/matiasfha/getting-started-fullstack-ethereum-development/tree/lesson09](https://github.com/matiasfha/getting-started-fullstack-ethereum-development/tree/lesson09)
 
 [https://birdeatsbug.com/blog/build-a-dapp-with-ethers-and-sveltejs](https://birdeatsbug.com/blog/build-a-dapp-with-ethers-and-sveltejs)
+
+# VeRocket V2
+
+## Addresses
+
+**Mainnet**
+| Contract | Address |
+| --- | --- |
+| WVET | 0xd8ccdd85abdbf68dfec95f06c973e87b1b5a9997 |
+| FactoryV2 | 0xb312582c023cc4938cf0faea2fd609b46d7509a2 |
+| RouterV2 | 0x6c0a6e1d922e0e63901301573370b932ae20dadb |
+| Migrator | 0xed721ed6cbd32fadf6901cb75f49946b3e605706 |
+
+**Testnet**
+| Contract | Address |
+| --- | --- |
+| VVET | 0x86fb5343bbecffc86185c023a2a6ccc76fc0afd8 |
+| VTHO | 0x0000000000000000000000000000456E65726779 |
+| FactoryV2 | 0xadd8fcf3f0e43aa828f2a55e6d1a9fe5c0d7a679 |
+| RouterV2 | 0x91e42759290239a62ac757cf85bb5b74ace57927 |
+| Pair WVET-VTHO | 0x1e5e9a6540b15a3efa8d4e8fadb82cc8e0e167ca |
+
+# Further reading
+
+- [https://blog.vechain.energy/how-to-swap-tokens-in-a-contract-c82082024aed](https://blog.vechain.energy/how-to-swap-tokens-in-a-contract-c82082024aed)
+- [https://docs.uniswap.org/contracts/v2/guides/smart-contract-integration/trading-from-a-smart-contract](https://docs.uniswap.org/contracts/v2/guides/smart-contract-integration/trading-from-a-smart-contract)

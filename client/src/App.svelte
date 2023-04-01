@@ -97,7 +97,7 @@
     const energyClause = approveMethod.asClause(
       GREETER_CONTRACT_ADDRESS,
       // MAX_UINT256.toString()
-      totalSupply.data
+      totalSupply.decoded[0]
     );
 
     connex.vendor

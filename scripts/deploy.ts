@@ -16,6 +16,7 @@ const {
 } = require("hardhat");
 
 const VTHO_CONTRACT_ADDRESS = process.env.VTHO_CONTRACT_ADDRESS;
+const VEXCHANGE_UNI_ROUTER_ADDRESS = process.env.VEXCHANGE_UNI_ROUTER_ADDRESS;
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => {
@@ -34,10 +35,13 @@ async function main() {
   console.log({ signers });
 
   const Greeter = await hre.thor.getContractFactory("Greeter");
-  const greeter = await Greeter.connect(admin).deploy(VTHO_CONTRACT_ADDRESS);
-  await greeter.deployed();
+  const greeter = await Greeter.connect(admin).deploy(
+    VTHO_CONTRACT_ADDRESS,
+    VEXCHANGE_UNI_ROUTER_ADDRESS
+  );
+  await greeter.deployed(); // const tx = ... => get address
 
-  console.log(`Greeter contract deployed to ${greeter.address}`);
+  console.log(`Greeter contract deployed to ${JSON.stringify(greeter)}`); // TODO: show contract address
 
   // if (["hardhat", "localhost"].includes(hre.network.name)) {
   //   console.log("Skipping contract's Etherscan verification");
